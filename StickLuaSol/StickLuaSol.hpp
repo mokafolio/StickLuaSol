@@ -6,6 +6,8 @@
 #include <Stick/String.hpp>
 #include <Stick/TypeList.hpp>
 #include <Stick/Variant.hpp>
+#include <Stick/DynamicArray.hpp>
+#include <Stick/Maybe.hpp>
 
 //@NOTE: This is by no means a complete binding for stick but rather a bunch of template
 // specializations for sol to implicitly push basic stick types between lua/c++.
