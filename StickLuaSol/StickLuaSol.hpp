@@ -1,15 +1,34 @@
 #ifndef STICKLUASOL_STICKLUASOL_HPP
 #define STICKLUASOL_STICKLUASOL_HPP
 
+#include <Stick/DynamicArray.hpp>
+#include <Stick/Maybe.hpp>
 #include <Stick/Result.hpp>
 #include <Stick/SharedPtr.hpp>
 #include <Stick/String.hpp>
 #include <Stick/TypeList.hpp>
 #include <Stick/Variant.hpp>
-#include <Stick/DynamicArray.hpp>
-#include <Stick/Maybe.hpp>
 
 #include <sol/sol.hpp>
+
+namespace stickLuaSol
+{
+STICK_API inline sol::table ensureNamespaceTable(sol::state_view _lua,
+                                                 sol::table _startTbl,
+                                                 const stick::String & _namespace)
+{
+    using namespace stick;
+
+    sol::table tbl = _startTbl;
+    if (!_namespace.isEmpty())
+    {
+        auto tokens = path::segments(_namespace, '.');
+        for (const String & token : tokens)
+            tbl = tbl[token.cString()] = tbl.get_or(token.cString(), _lua.create_table());
+    }
+    return tbl;
+}
+} // namespace stickLuaSol
 
 //@NOTE: This is by no means a complete binding for stick but rather a bunch of template
 // specializations for sol to implicitly push basic stick types between lua/c++.
