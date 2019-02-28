@@ -9,6 +9,8 @@
 #include <Stick/DynamicArray.hpp>
 #include <Stick/Maybe.hpp>
 
+#include <sol/sol.hpp>
+
 //@NOTE: This is by no means a complete binding for stick but rather a bunch of template
 // specializations for sol to implicitly push basic stick types between lua/c++.
 //@TODO add missing conversions for i.e. unique ptr etc.?
