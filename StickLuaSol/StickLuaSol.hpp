@@ -8,6 +8,7 @@
 #include <Stick/String.hpp>
 #include <Stick/TypeList.hpp>
 #include <Stick/Variant.hpp>
+#include <Stick/Path.hpp>
 
 #include <sol/sol.hpp>
 
