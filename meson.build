@@ -5,6 +5,8 @@ add_project_arguments('-Wno-missing-braces', language: 'cpp')
 
 incDirs = include_directories('.')
 
-install_headers('StickLuaSol/StickLuaSol.hpp', subdir: 'StickLuaSol')
+if meson.is_subproject() == false
+    install_headers('StickLuaSol/StickLuaSol.hpp', subdir: 'StickLuaSol')
+endif
 
 stickLuaDep = declare_dependency(include_directories: incDirs)
