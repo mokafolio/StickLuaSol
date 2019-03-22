@@ -3,14 +3,17 @@
 
 #include <Stick/DynamicArray.hpp>
 #include <Stick/Maybe.hpp>
+#include <Stick/Path.hpp>
 #include <Stick/Result.hpp>
 #include <Stick/SharedPtr.hpp>
 #include <Stick/String.hpp>
 #include <Stick/TypeList.hpp>
 #include <Stick/Variant.hpp>
-#include <Stick/Path.hpp>
 
 #include <sol/sol.hpp>
+
+//@NOTE: This is by no means a complete binding for stick but rather a bunch of template
+// specializations for sol to implicitly push basic stick types between lua/c++.
 
 namespace stickLuaSol
 {
@@ -31,8 +34,6 @@ STICK_API inline sol::table ensureNamespaceTable(sol::state_view _lua,
 }
 } // namespace stickLuaSol
 
-//@NOTE: This is by no means a complete binding for stick but rather a bunch of template
-// specializations for sol to implicitly push basic stick types between lua/c++.
 //@TODO add missing conversions for i.e. unique ptr etc.?
 namespace sol
 {
@@ -167,7 +168,10 @@ struct pusher<stick::String>
 {
     static int push(lua_State * L, const stick::String & _str)
     {
-        sol::stack::push(L, _str.cString());
+        if(_str.isEmpty())
+            sol::stack::push(L, "")
+        else
+            sol::stack::push(L, _str.cString());
         return 1;
     }
 };
