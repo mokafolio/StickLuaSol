@@ -169,7 +169,7 @@ struct pusher<stick::String>
     static int push(lua_State * L, const stick::String & _str)
     {
         if(_str.isEmpty())
-            sol::stack::push(L, "")
+            sol::stack::push(L, "");
         else
             sol::stack::push(L, _str.cString());
         return 1;
