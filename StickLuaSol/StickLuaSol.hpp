@@ -162,7 +162,7 @@ struct getter<stick::String>
         tracking.use(1);
         std::size_t len;
         auto str = lua_tolstring(L, index, &len);
-        return String(str, str + len);
+        return stick::String(str, str + len);
     }
 };
 
