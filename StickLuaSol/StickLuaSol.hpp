@@ -159,7 +159,10 @@ struct getter<stick::String>
 {
     static stick::String get(lua_State * L, int index, record & tracking)
     {
-        return sol::stack::get<const char *>(L, lua_absindex(L, index), tracking);
+        tracking.use(1);
+        std::size_t len;
+        auto str = lua_tolstring(L, index, &len);
+        return String(str, str + len);
     }
 };
 
