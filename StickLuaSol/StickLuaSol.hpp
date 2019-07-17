@@ -55,12 +55,13 @@ struct unique_usertype_traits<stick::SharedPtr<T>>
     }
 };
 
-template <class T>
-struct unique_usertype_traits<stick::UniquePtr<T>>
+template <class T, class C>
+struct unique_usertype_traits<stick::UniquePtr<T, C>>
 {
     typedef T type;
-    typedef stick::UniquePtr<T> actual_type;
+    typedef stick::UniquePtr<T, C> actual_type;
     static const bool value = true;
+    using rebind_base = void;
 
     static bool is_null(const actual_type & value)
     {
@@ -425,7 +426,7 @@ struct pusher<stick::Result<T>>
         if(_result)
         {
             // return sol::make_object(L, std::move(_result.get()));
-            sol::stack::push(L, std::move(_result.get()));
+            sol::stack::push_reference(L, std::move(_result.get()));
         }
         else
         {
