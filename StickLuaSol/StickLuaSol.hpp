@@ -55,11 +55,11 @@ struct unique_usertype_traits<stick::SharedPtr<T>>
     }
 };
 
-template <class T, class C>
-struct unique_usertype_traits<stick::UniquePtr<T, C>>
+template <class T>
+struct unique_usertype_traits<stick::UniquePtr<T>>
 {
     typedef T type;
-    typedef stick::UniquePtr<T, C> actual_type;
+    typedef stick::UniquePtr<T> actual_type;
     static const bool value = true;
 
     static bool is_null(const actual_type & value)
