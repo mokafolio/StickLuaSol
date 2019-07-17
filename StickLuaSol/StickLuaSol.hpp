@@ -424,7 +424,7 @@ struct pusher<stick::Result<T>>
 
         if(_result)
         {
-            return sol::make_object(L, _result.get());
+            return sol::make_object(L, std::move(_result.get()));
         }
         else
         {
