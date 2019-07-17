@@ -37,11 +37,29 @@ STICK_API inline sol::table ensureNamespaceTable(sol::state_view _lua,
 //@TODO add missing conversions for i.e. unique ptr etc.?
 namespace sol
 {
-template <typename T>
+template <class T>
 struct unique_usertype_traits<stick::SharedPtr<T>>
 {
     typedef T type;
     typedef stick::SharedPtr<T> actual_type;
+    static const bool value = true;
+
+    static bool is_null(const actual_type & value)
+    {
+        return (bool)!value;
+    }
+
+    static type * get(const actual_type & p)
+    {
+        return p.get();
+    }
+};
+
+template <class T, class C>
+struct unique_usertype_traits<stick::UniquePtr<T, C>>
+{
+    typedef T type;
+    typedef stick::UniquePtr<T, C> actual_type;
     static const bool value = true;
 
     static bool is_null(const actual_type & value)
@@ -393,15 +411,26 @@ struct pusher<stick::Result<T>>
 {
     static int push(lua_State * L, const stick::Result<T> & _result)
     {
-        sol::table tbl(L, sol::new_table(0, 1));
-        tbl.set_function("ensure", [_result]() { return std::move(_result.ensure()); });
-        tbl.set_function("get", [L, _result]() {
-            if (_result)
-                return sol::make_object(L, _result.get());
-            else
-                return sol::make_object(L, _result.error());
-        });
-        sol::stack::push(L, tbl);
+        // sol::table tbl(L, sol::new_table(0, 1));
+        // tbl.set_function("ensure", [_result]() { return std::move(_result.ensure()); });
+        // tbl.set_function("get", [L, _result]() {
+        //     if (_result)
+        //         return sol::make_object(L, _result.get());
+        //     else
+        //         return sol::make_object(L, _result.error());
+        // });
+        // sol::stack::push(L, tbl);
+        // return 1;
+
+        if(_result)
+        {
+            return sol::make_object(L, _result.get());
+        }
+        else
+        {
+            return sol::make_object(L, _result.error());
+        }
+
         return 1;
     }
 };
