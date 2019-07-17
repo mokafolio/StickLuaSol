@@ -410,7 +410,7 @@ namespace stack
 template <class T>
 struct pusher<stick::Result<T>>
 {
-    static int push(lua_State * L, const stick::Result<T> & _result)
+    static int push(lua_State * L, stick::Result<T> & _result)
     {
         // sol::table tbl(L, sol::new_table(0, 1));
         // tbl.set_function("ensure", [_result]() { return std::move(_result.ensure()); });
@@ -426,7 +426,7 @@ struct pusher<stick::Result<T>>
         if(_result)
         {
             // return sol::make_object(L, std::move(_result.get()));
-            sol::stack::push_reference(L, std::move(_result.get()));
+            sol::stack::push(L, std::move(_result.get()));
         }
         else
         {
