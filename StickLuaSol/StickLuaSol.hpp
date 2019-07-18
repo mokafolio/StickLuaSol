@@ -9,6 +9,7 @@
 #include <Stick/String.hpp>
 #include <Stick/TypeList.hpp>
 #include <Stick/Variant.hpp>
+#include <Stick/UniquePtr.hpp>
 
 #include <sol/sol.hpp>
 
