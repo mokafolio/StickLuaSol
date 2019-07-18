@@ -413,29 +413,29 @@ struct pusher<stick::Result<T>>
 {
     static int push(lua_State * L, const stick::Result<T> & _result)
     {
-        // sol::table tbl(L, sol::new_table(0, 1));
-        // tbl.set_function("ensure", [_result]() { return std::move(_result.ensure()); });
-        // tbl.set_function("get", [L, _result]() {
-        //     if (_result)
-        //         return sol::make_object(L, _result.get());
-        //     else
-        //         return sol::make_object(L, _result.error());
-        // });
-        // sol::stack::push(L, tbl);
-        // return 1;
-
-        if(_result)
-        {
-            // return sol::make_object(L, std::move(_result.get()));
-            sol::stack::push(L, std::move(_result.get()));
-        }
-        else
-        {
-            // return sol::make_object(L, _result.error());
-            sol::stack::push(L, _result.error());
-        }
-
+        sol::table tbl(L, sol::new_table(0, 1));
+        tbl.set_function("ensure", [_result]() { return std::move(_result.ensure()); });
+        tbl.set_function("get", [L, _result]() {
+            if (_result)
+                return sol::make_object(L, _result.get());
+            else
+                return sol::make_object(L, _result.error());
+        });
+        sol::stack::push(L, tbl);
         return 1;
+
+        // if(_result)
+        // {
+        //     // return sol::make_object(L, std::move(_result.get()));
+        //     sol::stack::push(L, std::move(_result.get()));
+        // }
+        // else
+        // {
+        //     // return sol::make_object(L, _result.error());
+        //     sol::stack::push(L, _result.error());
+        // }
+
+        // return 1;
     }
 };
 } // namespace stack
